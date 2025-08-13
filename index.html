@@ -2,23 +2,32 @@
 <html>
 <head>
   <title>Star Wars Q&A</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       max-width: 700px;
       margin: 30px auto;
-      background: #121212;
-      color: #eee;
+      background: radial-gradient(ellipse at center, #000 0%, #050010 80%);
+      color: #feda4a; /* Star Wars gold */
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 20px #0ff;
+      box-shadow: 0 0 25px #feda4a;
+      background-image: url('https://i.imgur.com/8Rj7R8W.png'); /* subtle starfield */
+      background-repeat: repeat;
+      background-size: contain;
     }
     h1 {
       text-align: center;
       color: #00bfff;
       margin-bottom: 30px;
-      font-weight: 700;
-      text-shadow: 0 0 8px #00bfff;
+      font-weight: 900;
+      font-size: 3rem;
+      text-shadow: 0 0 20px #00bfff, 0 0 40px #00bfff;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0 0 20px 0;
     }
     #questions {
       margin-bottom: 20px;
@@ -27,24 +36,28 @@
       border: 2px solid #00bfff;
       padding: 15px;
       border-radius: 8px;
-      background: #222;
+      background: rgba(0, 0, 50, 0.7);
     }
     .question-item {
-      background: #001f33;
+      background: rgba(255, 255, 255, 0.05);
       padding: 10px 15px;
       border-radius: 6px;
       margin-bottom: 12px;
-      box-shadow: 0 0 5px #0077cc;
+      box-shadow: 0 0 5px #00bfff;
+      border: 1px solid #00bfff;
+      animation: flicker 3s infinite;
     }
     .question-text {
-      font-weight: 600;
-      color: #0ff;
+      font-weight: 700;
+      color: #feda4a;
+      text-shadow: 0 0 10px #feda4a;
     }
     .reply-text {
       margin-top: 6px;
       padding-left: 10px;
-      color: #ffdd57;
+      color: #00ffff;
       font-style: italic;
+      text-shadow: 0 0 5px #00ffff;
     }
     #askForm {
       display: flex;
@@ -57,25 +70,39 @@
       border-radius: 6px;
       border: none;
       outline: none;
+      background: #222;
+      color: #feda4a;
+      box-shadow: 0 0 5px #feda4a inset;
     }
     #askBtn {
-      background-color: #00bfff;
+      background-color: #feda4a;
       border: none;
       padding: 10px 20px;
-      color: white;
-      font-weight: 700;
+      color: #000;
+      font-weight: 900;
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.3s;
+      box-shadow: 0 0 10px #feda4a;
     }
     #askBtn:hover {
-      background-color: #0080c0;
+      background-color: #ffeb7a;
+    }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 22%, 24%, 55% {
+        opacity: 0.4;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Star Wars Q&A</h1>
+  <div style="text-align:center; margin-bottom: 15px;">
+    <h1>Star Wars Q&amp;A</h1>
+  </div>
 
   <div id="questions"></div>
 
@@ -89,7 +116,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
   <script>
-    // Your Firebase config object
     const firebaseConfig = {
       apiKey: "AIzaSyBAZSGurqu9RpSBcTJy4pyIErMNKb7lQ_s",
       authDomain: "starwars-web.firebaseapp.com",
@@ -101,7 +127,6 @@
       measurementId: "G-QBYMXLSK7E"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
@@ -109,7 +134,6 @@
     const askForm = document.getElementById('askForm');
     const askInput = document.getElementById('askInput');
 
-    // Render all questions and replies from Firebase
     function renderQnA(snapshot) {
       questionsDiv.innerHTML = '';
       const qna = snapshot.val();
@@ -133,13 +157,11 @@
         questionsDiv.appendChild(qDiv);
       });
 
-      // Scroll newest question into view
       if (questionsDiv.lastChild) {
         questionsDiv.lastChild.scrollIntoView({behavior: "smooth"});
       }
     }
 
-    // Listen for changes in questions/replies
     db.ref('starwarsQnA').on('value', renderQnA);
 
     askForm.addEventListener('submit', e => {
@@ -147,7 +169,6 @@
       const questionText = askInput.value.trim();
       if (!questionText) return;
 
-      // Push new question to Firebase with empty reply
       db.ref('starwarsQnA').push({
         question: questionText,
         reply: ""
