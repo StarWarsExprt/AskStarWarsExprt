@@ -8,14 +8,23 @@
       font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       max-width: 700px;
       margin: 30px auto;
-      background: radial-gradient(ellipse at center, #000 0%, #050010 80%);
+      background: url('https://i.imgur.com/6N8bHZQ.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: #feda4a; /* Star Wars gold */
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 25px #feda4a;
-      background-image: url('https://i.imgur.com/8Rj7R8W.png'); /* subtle starfield */
-      background-repeat: repeat;
-      background-size: contain;
+      /* add subtle dark overlay */
+      position: relative;
+      z-index: 1;
+    }
+    /* overlay to darken background for text readability */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 0;
     }
     h1 {
       text-align: center;
@@ -27,6 +36,8 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-family: 'Orbitron', sans-serif;
+      position: relative;
+      z-index: 1;
       margin: 0 0 20px 0;
     }
     #questions {
@@ -37,6 +48,8 @@
       padding: 15px;
       border-radius: 8px;
       background: rgba(0, 0, 50, 0.7);
+      position: relative;
+      z-index: 1;
     }
     .question-item {
       background: rgba(255, 255, 255, 0.05);
@@ -46,6 +59,8 @@
       box-shadow: 0 0 5px #00bfff;
       border: 1px solid #00bfff;
       animation: flicker 3s infinite;
+      position: relative;
+      z-index: 1;
     }
     .question-text {
       font-weight: 700;
@@ -62,6 +77,8 @@
     #askForm {
       display: flex;
       gap: 10px;
+      position: relative;
+      z-index: 1;
     }
     #askInput {
       flex-grow: 1;
@@ -100,9 +117,7 @@
 </head>
 <body>
 
-  <div style="text-align:center; margin-bottom: 15px;">
-    <h1>Star Wars Q&amp;A</h1>
-  </div>
+  <h1>Star Wars Q&amp;A</h1>
 
   <div id="questions"></div>
 
