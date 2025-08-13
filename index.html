@@ -4,28 +4,28 @@
   <title>Star Wars Q&A</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
   <style>
+    /* Starry space background with CSS */
     body {
       font-family: 'Orbitron', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       max-width: 700px;
       margin: 30px auto;
-      background: url('https://i.imgur.com/6N8bHZQ.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background-color: #000010;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 50px 70px, #ccc, transparent),
+        radial-gradient(2px 2px at 120px 120px, #eee, transparent),
+        radial-gradient(1.2px 1.2px at 250px 200px, #fff, transparent),
+        radial-gradient(1.8px 1.8px at 350px 50px, #ddd, transparent),
+        radial-gradient(1.6px 1.6px at 400px 300px, #fff, transparent);
+      background-repeat: repeat;
       color: #feda4a; /* Star Wars gold */
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 25px #feda4a;
-      /* add subtle dark overlay */
       position: relative;
-      z-index: 1;
+      overflow: hidden;
     }
-    /* overlay to darken background for text readability */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      z-index: 0;
-    }
+
     h1 {
       text-align: center;
       color: #00bfff;
@@ -36,10 +36,9 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-family: 'Orbitron', sans-serif;
-      position: relative;
-      z-index: 1;
       margin: 0 0 20px 0;
     }
+
     #questions {
       margin-bottom: 20px;
       max-height: 500px;
@@ -48,9 +47,8 @@
       padding: 15px;
       border-radius: 8px;
       background: rgba(0, 0, 50, 0.7);
-      position: relative;
-      z-index: 1;
     }
+
     .question-item {
       background: rgba(255, 255, 255, 0.05);
       padding: 10px 15px;
@@ -59,14 +57,14 @@
       box-shadow: 0 0 5px #00bfff;
       border: 1px solid #00bfff;
       animation: flicker 3s infinite;
-      position: relative;
-      z-index: 1;
     }
+
     .question-text {
       font-weight: 700;
       color: #feda4a;
       text-shadow: 0 0 10px #feda4a;
     }
+
     .reply-text {
       margin-top: 6px;
       padding-left: 10px;
@@ -74,12 +72,12 @@
       font-style: italic;
       text-shadow: 0 0 5px #00ffff;
     }
+
     #askForm {
       display: flex;
       gap: 10px;
-      position: relative;
-      z-index: 1;
     }
+
     #askInput {
       flex-grow: 1;
       padding: 10px;
@@ -91,6 +89,7 @@
       color: #feda4a;
       box-shadow: 0 0 5px #feda4a inset;
     }
+
     #askBtn {
       background-color: #feda4a;
       border: none;
@@ -102,9 +101,11 @@
       transition: background-color 0.3s;
       box-shadow: 0 0 10px #feda4a;
     }
+
     #askBtn:hover {
       background-color: #ffeb7a;
     }
+
     @keyframes flicker {
       0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
         opacity: 1;
@@ -192,5 +193,6 @@
       askInput.value = '';
     });
   </script>
+
 </body>
 </html>
