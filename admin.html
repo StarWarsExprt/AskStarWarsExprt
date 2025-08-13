@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Star Wars Admin Panel</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 700px;
+      margin: 30px auto;
+      background: #111;
+      color: #eee;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #ffcc00;
+    }
+    h1 {
+      text-align: center;
+      color: #ffcc00;
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-shadow: 0 0 8px #ffcc00;
+    }
+    #questions {
+      max-height: 500px;
+      overflow-y: auto;
+      border: 2px solid #ffcc00;
+      padding: 15px;
+      border-radius: 8px;
+      background: #222;
+    }
+    .question-item {
+      background: #443300;
+      padding: 12px 15px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      box-shadow: 0 0 5px #aa8800;
+    }
+    .question-text {
+      font-weight: 700;
+      color: #ffcc00;
+    }
+    textarea {
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: none;
+      padding: 10px;
+      resize: vertical;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    button.saveBtn {
+      margin-top: 6px;
+      background-color: #ffcc00;
+      border: none;
+      padding: 8px 18px;
+      color: #333;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button.saveBtn:hover {
+      background-color: #ddaa00;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Star Wars Admin Panel</h1>
+
+  <div id="questions"></div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+  <script>
+    // Your Firebase config object
+    const firebaseConfig = {
+      apiKey: "AIzaSyBAZSGurqu9RpSBcTJy4pyIErMNKb7lQ_s",
+      authDomain: "starwars-web.firebaseapp.com",
+      databaseURL: "https://starwars-web-default-rtdb.firebaseio.com",
+      projectId: "starwars-web",
+      storageBucket: "starwars-web.firebasestorage.app",
+      messagingSenderId: "271984824779",
+      appId: "1:271984824779:web:1569a9eca33e404fc9a64e",
+      measurementId: "G-QBYMXLSK7E"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const questionsDiv = document.getElementById('questions');
+
+    // Load questions from Firebase and render
+    function renderQnA(snapshot) {
+      questionsDiv.innerHTML = '';
+      const qna = snapshot.val();
+      if (!qna) return;
+      Object.entries(qna).forEach(([key, item]) => {
+        const container = document.createElement('div');
+        container.classList.add('question-item');
+
+        const qText = document.createElement('div');
+        qText.classList.add('question-text');
+        qText.textContent = 'Q: ' + item.question;
+        container.appendChild(qText);
+
+        const replyBox = document.createElement('textarea');
+        replyBox.placeholder = 'Type reply here...';
+        replyBox.value = item.reply || '';
+        container.appendChild(replyBox);
+
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Save Reply';
+        saveBtn.classList.add('saveBtn');
+        saveBtn.onclick = () => {
+          const newReply = replyBox.value.trim();
+          db.ref('starwarsQnA/' + key).update({ reply: newReply });
+          alert('Reply saved!');
+        };
+        container.appendChild(saveBtn);
+
+        questionsDiv.appendChild(container);
+      });
+    }
+
+    // Listen for changes in questions/replies
+    db.ref('starwarsQnA').on('value', renderQnA);
+  </script>
+
+</body>
+</html>
